@@ -6,6 +6,7 @@ import Task from "./Components/task.jsx";
 function App() {
     const [tasksArray,setTasksArray] = useState([])
     const [idTask, setIdTask] = useState(0)
+    //const [changeMode, setChangeMode] = useState(false)
     const addTask = (text) => {
         setIdTask(idTask => idTask+1)
         setTasksArray([{text, id: idTask, completed: false}, ...tasksArray])
@@ -14,8 +15,14 @@ function App() {
         setTasksArray(tasksArray.filter(task => task.id !== id))
     }
 
-    const changeTask = (id) => {
-        // tasksArray.map(task => task.id === id ? )
+    const changeTask = (text, id) => {
+        setTasksArray(tasksArray.map(task => {
+            if(task.id === id) {
+                return {...task, text}
+            } else {
+                return {...task}
+            }
+        }))
     }
 
     const taskCompleted = (check, id) => {
@@ -38,6 +45,7 @@ function App() {
                 <Task
                     changeTask={changeTask}
                     deleteTask={deleteTask} num={i+1} task={taskObj}
+
                     key={taskObj.id} taskCompleted = {taskCompleted}
                 />)}
         </div>
