@@ -1,12 +1,13 @@
-import { useState } from 'react'
-import './App.css'
+import {useEffect, useState} from 'react'
+import './App.scss'
 import MainInput from "./Components/MainInput.jsx";
 import Task from "./Components/task.jsx";
 
+
+//localStorage.getItem('tasks') ||
 function App() {
-    const [tasksArray,setTasksArray] = useState([])
-    const [idTask, setIdTask] = useState(0)
-    //const [changeMode, setChangeMode] = useState(false)
+    const [tasksArray,setTasksArray] = useState( JSON.parse(localStorage.getItem('tasks')) || [])
+    const [idTask, setIdTask] = useState(JSON.parse(localStorage.getItem('ids')) || 0)
     const addTask = (text) => {
         setIdTask(idTask => idTask+1)
         setTasksArray([{text, id: idTask, completed: false}, ...tasksArray])
@@ -25,6 +26,13 @@ function App() {
         }))
     }
 
+    useEffect(() => {
+        if (tasksArray) {
+            localStorage.setItem("ids", JSON.stringify(idTask))
+            localStorage.setItem("tasks", JSON.stringify(tasksArray))
+        }
+    }, [tasksArray])
+
     const taskCompleted = (check, id) => {
         setTasksArray(tasksArray.map(task => {
             if(task.id === id) {
@@ -37,7 +45,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>ToDoList</h1>
+      <h1 className="mainTitle">ToDoList</h1>
         <MainInput addTask={addTask} />
         <div className="container d-flex align-items-center flex-column mt-lg-5">
             {!tasksArray.length && <h2>Задач нет</h2>}
