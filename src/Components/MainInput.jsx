@@ -1,4 +1,4 @@
-import {useRef} from "react";
+import {useEffect, useRef} from "react";
 import './mainInput.scss'
 
 export default function MainInput({addTask}) {
@@ -11,10 +11,14 @@ export default function MainInput({addTask}) {
         task.current.value = ''
     }
 
+    useEffect(() => {
+       task.current.focus()
+    }, [])
+
     return (
         <div className="container mainInput">
             <form onSubmit={submit} action="">
-                <input required ref={task} type="text"/>
+                <input placeholder="Добавить новую задачу..." required ref={task} type="text"/>
                 <button className="btn btn-success">Добавить</button>
             </form>
         </div>

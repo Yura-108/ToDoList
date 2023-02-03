@@ -2,12 +2,13 @@ import {useEffect, useState} from 'react'
 import './App.scss'
 import MainInput from "./Components/MainInput.jsx";
 import Task from "./Components/task.jsx";
+import { Reorder} from "framer-motion";
 
-
-//localStorage.getItem('tasks') ||
 function App() {
-    const [tasksArray,setTasksArray] = useState( JSON.parse(localStorage.getItem('tasks')) || [])
+    const [tasksArray, setTasksArray] = useState( JSON.parse(localStorage.getItem('tasks')) || [])
     const [idTask, setIdTask] = useState(JSON.parse(localStorage.getItem('ids')) || 0)
+
+
     const addTask = (text) => {
         setIdTask(idTask => idTask+1)
         setTasksArray([{text, id: idTask, completed: false}, ...tasksArray])
@@ -47,18 +48,15 @@ function App() {
     <div className="App">
       <h1 className="mainTitle">ToDoList</h1>
         <MainInput addTask={addTask} />
-        <div className="container d-flex align-items-center flex-column mt-lg-5">
             {!tasksArray.length && <h2>Задач нет</h2>}
+            <Reorder.Group className="container d-flex align-items-center flex-column mt-lg-5" as="div" axis="y" onReorder={setTasksArray} values={tasksArray}>
             {tasksArray.map((taskObj, i) =>
                 <Task
                     changeTask={changeTask}
                     deleteTask={deleteTask} num={i+1} task={taskObj}
-
                     key={taskObj.id} taskCompleted = {taskCompleted}
                 />)}
-        </div>
-
-
+            </Reorder.Group>
     </div>
   )
 }
