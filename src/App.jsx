@@ -46,7 +46,9 @@ function App() {
 
   return (
     <div className="App">
-      <h1 className="mainTitle">ToDoList</h1>
+        <header>
+            <h1 className="mainTitle">ToDoList</h1>
+        </header>
         <MainInput addTask={addTask} />
             {!tasksArray.length && <h2>Задач нет</h2>}
             <Reorder.Group className="container d-flex align-items-center flex-column mt-lg-5" as="div" axis="y" onReorder={setTasksArray} values={tasksArray}>

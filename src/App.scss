@@ -4,7 +4,13 @@
     align-content: center;
     flex-direction: column;
     text-align: center;
-    .mainTitle {
-        margin-top: 70px;
+    header {
+        width: 100%;
+        color: #fff;
+        padding: 10px;
+        background: #0B95DD;
     }
+    //.mainTitle {
+    //    margin-top: 70px;
+    //}
 }
