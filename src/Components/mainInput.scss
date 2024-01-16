@@ -4,16 +4,40 @@
 
   button {
     margin-left: 10px;
+    width: 100px;
+    margin-top: 20px;
   }
-
-  input {
-    border: none;
-    border-bottom: 4px solid transparent;
-    border-image: linear-gradient(to right, #0B0E7F , #0B95DD);
-    border-image-slice: 1;
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .importance {
+    margin-top: 10px;
+    font-size: 16px;
     width: 50%;
+    .active {
+      border: 2px solid #0171BC;
+      font-weight: bold;
+    }
+    div {
+      width: 160px;
+      margin: 0 5px;
+    }
+  }
+  #titleInput {
     font-size: 26px;
     font-weight: bold;
+  }
+  #descriptionInput {
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 20px;
+  }
+  input {
+    border: none;
+    border-bottom: 2px solid black;
+    width: 50%;
     outline: none;
     padding: 0 10px;
   }

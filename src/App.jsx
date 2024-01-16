@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useRef, useState} from 'react'
 import './App.scss'
 import MainInput from "./Components/MainInput.jsx";
 import Task from "./Components/task.jsx";
@@ -8,23 +8,47 @@ function App() {
     const [tasksArray, setTasksArray] = useState( JSON.parse(localStorage.getItem('tasks')) || [])
     const [idTask, setIdTask] = useState(JSON.parse(localStorage.getItem('ids')) || 0)
 
+    const taskTitle = useRef(null)
+    const taskDescription = useRef(null)
+    const [importance, setImportance] = useState('success')
+    const [changeMode, setChangeMode] = useState(false)
+    const [idEditElement, setIdEditElement] = useState(0)
 
-    const addTask = (text) => {
+    const task = {
+        id: 0,
+        text: '',
+        description: '',
+        date: '',
+        tag: '',
+        completed: false,
+        deadline: '',
+    }
+
+    const addTask = (title, description, importance ,nowTime) => {
         setIdTask(idTask => idTask+1)
-        setTasksArray([{text, id: idTask, completed: false}, ...tasksArray])
+        setTasksArray([{title, description, id: idTask, importance, completed: false, date: nowTime}, ...tasksArray])
     }
     const deleteTask = (id) => {
         setTasksArray(tasksArray.filter(task => task.id !== id))
     }
 
-    const changeTask = (text, id) => {
+    const changeTask = (id, title, description, importance) => {
+        console.log(taskTitle, 'h')
+        taskTitle.current.focus()
+        setIdEditElement(id)
+        taskTitle.current.value = title
+        taskDescription.current.value = description
+        setImportance(importance)
+    }
+    const editTask = (title, description, importance) => {
         setTasksArray(tasksArray.map(task => {
-            if(task.id === id) {
-                return {...task, text}
+            if (task.id === idEditElement) {
+                return {...task, title, description, importance}
             } else {
                 return {...task}
             }
         }))
+        setChangeMode(false)
     }
 
     useEffect(() => {
@@ -49,12 +73,13 @@ function App() {
         <header>
             <h1 className="mainTitle">ToDoList</h1>
         </header>
-        <MainInput addTask={addTask} />
+        <MainInput addTask={addTask} formComponents={[taskTitle, taskDescription, importance, setImportance]} changeMode={changeMode} editTask={editTask} />
             {!tasksArray.length && <h2>Задач нет</h2>}
             <Reorder.Group className="container d-flex align-items-center flex-column mt-lg-5" as="div" axis="y" onReorder={setTasksArray} values={tasksArray}>
             {tasksArray.map((taskObj, i) =>
                 <Task
                     changeTask={changeTask}
+                    setChangeMode={setChangeMode}
                     deleteTask={deleteTask} num={i+1} task={taskObj}
                     key={taskObj.id} taskCompleted = {taskCompleted}
                 />)}
