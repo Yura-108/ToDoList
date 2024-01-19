@@ -4,8 +4,17 @@ import MainInput from "./Components/MainInput.jsx";
 import Task from "./Components/task.jsx";
 import { Reorder} from "framer-motion";
 
+
 function App() {
-    const [tasksArray, setTasksArray] = useState( JSON.parse(localStorage.getItem('tasks')) || [])
+    const [tasksArray, setTasksArray] = useState( [])
+
+    useEffect(() => {
+        fetch('http://localhost:3000/tasks')
+            .then(response => response.json())
+            .then(data => setTasksArray(data))
+            .catch(error => console.error('Ошибка при получении задач:', error));
+    }, []);
+
     const [idTask, setIdTask] = useState(JSON.parse(localStorage.getItem('ids')) || 0)
 
     const taskTitle = useRef(null)
@@ -13,16 +22,6 @@ function App() {
     const [importance, setImportance] = useState('success')
     const [changeMode, setChangeMode] = useState(false)
     const [idEditElement, setIdEditElement] = useState(0)
-
-    const task = {
-        id: 0,
-        text: '',
-        description: '',
-        date: '',
-        tag: '',
-        completed: false,
-        deadline: '',
-    }
 
     const addTask = (title, description, importance ,nowTime) => {
         setIdTask(idTask => idTask+1)
@@ -42,7 +41,7 @@ function App() {
     }
     const editTask = (title, description, importance) => {
         setTasksArray(tasksArray.map(task => {
-            if (task.id === idEditElement) {
+            if (task._id === idEditElement) {
                 return {...task, title, description, importance}
             } else {
                 return {...task}
@@ -60,7 +59,7 @@ function App() {
 
     const taskCompleted = (check, id) => {
         setTasksArray(tasksArray.map(task => {
-            if(task.id === id) {
+            if(task._id === id) {
                 return {...task, completed: check}
             } else {
                 return {...task}
@@ -81,7 +80,7 @@ function App() {
                     changeTask={changeTask}
                     setChangeMode={setChangeMode}
                     deleteTask={deleteTask} num={i+1} task={taskObj}
-                    key={taskObj.id} taskCompleted = {taskCompleted}
+                    key={taskObj._id} taskCompleted = {taskCompleted}
                 />)}
             </Reorder.Group>
     </div>

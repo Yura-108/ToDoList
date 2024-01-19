@@ -1,15 +1,14 @@
 import './task.scss'
-import {useEffect, useRef, useState} from "react";
+import {useRef, useState} from "react";
 import {Reorder} from "framer-motion";
 import {motion} from "framer-motion";
-
 
 export default function Task({num, task, deleteTask, changeTask, taskCompleted, setChangeMode}) {
     const [wrapTask, setWrapTask] = useState(false)
     const checkbox = useRef(null)
 
     const edit = () => {
-        changeTask(task.id, task.title, task.description, task.importance)
+        changeTask(task._id, task.title, task.description, task.importance)
         setChangeMode(true)
         setWrapTask(true)
     }
@@ -29,7 +28,7 @@ export default function Task({num, task, deleteTask, changeTask, taskCompleted, 
                 </div>
                 <div className="panel">
                     <input checked={task.completed} className="checkbox" ref={checkbox}
-                           onChange={() => taskCompleted(checkbox.current.checked, task.id)} type="checkbox"/>
+                           onChange={() => taskCompleted(checkbox.current.checked, task._id)} type="checkbox"/>
                     <button onClick={() => edit()}
                             id="btnEdit"><i className="bi bi-pencil-square"></i></button>
                     <button id="btnDelete" onClick={() => deleteTask(task.id)}><i className="bi bi-x-octagon"></i></button>
@@ -45,11 +44,11 @@ export default function Task({num, task, deleteTask, changeTask, taskCompleted, 
                 </div>
                 <div className="time">
                     <h6>Time:</h6>
-                    <h6 style={{marginLeft: "10px"}}>{task.date.currentTime}</h6>
+                    <h6 style={{marginLeft: "10px"}}>{task.time}</h6>
                 </div>
                 <div className="date">
                     <h6>Date: </h6>
-                    <h6 style={{marginLeft: "10px"}}>{task.date.formattedDate}</h6>
+                    <h6 style={{marginLeft: "10px"}}>{task.date}</h6>
                 </div>
                 <div className="completedInfo">
                     <h6>completed:
