@@ -25,10 +25,10 @@ function App() {
 
     const addTask = (title, description, importance ,nowTime) => {
         setIdTask(idTask => idTask+1)
-        setTasksArray([{title, description, id: idTask, importance, completed: false, date: nowTime}, ...tasksArray])
+        setTasksArray([{title, description, importance, completed: false, date: nowTime}, ...tasksArray])
     }
-    const deleteTask = (id) => {
-        setTasksArray(tasksArray.filter(task => task.id !== id))
+    const deleteTask = id => {
+        setTasksArray(tasksArray.filter(task => task._id !== id))
     }
 
     const changeTask = (id, title, description, importance) => {

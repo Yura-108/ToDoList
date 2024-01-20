@@ -31,7 +31,7 @@ export default function Task({num, task, deleteTask, changeTask, taskCompleted, 
                            onChange={() => taskCompleted(checkbox.current.checked, task._id)} type="checkbox"/>
                     <button onClick={() => edit()}
                             id="btnEdit"><i className="bi bi-pencil-square"></i></button>
-                    <button id="btnDelete" onClick={() => deleteTask(task.id)}><i className="bi bi-x-octagon"></i></button>
+                    <button id="btnDelete" onClick={() => deleteTask(task._id)}><i className="bi bi-x-octagon"></i></button>
                     <button id="unwrap" onClick={() => setWrapTask(!wrapTask)}>
                         <i className={wrapTask ? "bi bi-chevron-up" : "bi bi-chevron-down"}></i>
                     </button>
