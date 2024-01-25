@@ -1,11 +1,12 @@
-import './task.scss'
+import './styles/task.scss'
 import {useRef, useState} from "react";
 import {Reorder} from "framer-motion";
 import {motion} from "framer-motion";
 
-export default function Task({num, task, deleteTask, changeTask, taskCompleted, setChangeMode}) {
+export default function Task({num, task, deleteTask, changeTask, taskCompleted, setChangeMode, isLoading = false}) {
     const [wrapTask, setWrapTask] = useState(false)
     const checkbox = useRef(null)
+
 
     const edit = () => {
         changeTask(task._id, task.title, task.description, task.importance)
@@ -14,7 +15,8 @@ export default function Task({num, task, deleteTask, changeTask, taskCompleted, 
     }
 
     return (
-        <Reorder.Item className={wrapTask ? "task wrap" : "task"} as="div" value={task}>
+        (isLoading ? (<div></div>) :
+            <Reorder.Item className={wrapTask ? "task wrap" : "task"} as="div" value={task}>
             <div className="headerTask">
                 <div className="title">
                     <h2>{num}.</h2>
@@ -40,15 +42,11 @@ export default function Task({num, task, deleteTask, changeTask, taskCompleted, 
             <div className="contentTask">
                 <div className="description">
                     <h6>description: </h6>
-                    <p>{task.description}</p>
-                </div>
-                <div className="time">
-                    <h6>Time:</h6>
-                    <h6 style={{marginLeft: "10px"}}>{task.time}</h6>
+                    <h6 style={{marginLeft: "10px"}}>{task.description}</h6>
                 </div>
                 <div className="date">
-                    <h6>Date: </h6>
-                    <h6 style={{marginLeft: "10px"}}>{task.date}</h6>
+                    <h6>Date of addition: </h6>
+                    <h6 style={{marginLeft: "10px"}}>{task.date} | {task.time}</h6>
                 </div>
                 <div className="completedInfo">
                     <h6>completed:
@@ -66,12 +64,14 @@ export default function Task({num, task, deleteTask, changeTask, taskCompleted, 
                 </div>
                 <div className="importance">
                     <h6>importance: </h6>
-                    <div className={"tag btn btn-" + task.importance}>{task.importance}</div>
+                    <div className={`tag ${task.importance}`}>{task.importance}</div>
                 </div>
                 <div className="deadline">
-                    <h6>deadline: </h6>
+                    <h6>deadline:</h6>
+                    <h6 style={{marginLeft: "10px"}}>{task.deadline}</h6>
                 </div>
             </div>
         </Reorder.Item>
+        )
     )
 }

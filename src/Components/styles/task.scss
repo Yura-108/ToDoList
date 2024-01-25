@@ -67,18 +67,25 @@
     }
 
     .description {
-      p {
-        margin: 0 10px;
-      }
+
     }
     .tag {
-      color: white;
       font-size: 16px;
       font-weight: bold;
-      padding: 2px 5px;
+      padding: 2px 7px;
       border-radius: 10px;
-
       margin-left: 10px;
+    }
+    .low {
+      color: white;
+      background: #198754;
+    }
+    .middle {
+      background: #FFC107;
+    }
+    .high {
+      color: white;
+      background: #DA3544;
     }
     .description, .completedInfo, .importance, .date, .time, .deadline {
       border-bottom: 1px solid #ccc;
