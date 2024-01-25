@@ -1,8 +1,7 @@
 import MainInput from "./MainInput.jsx";
 import {Reorder} from "framer-motion";
 import Task from "./Task.jsx";
-import {useEffect, useRef, useState} from "react";
-import axios from "../axios.js";
+import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchTodos} from "../redux/slices/todoSlice.js";
 
@@ -73,7 +72,6 @@ export default function Home() {
     const taskCompleted = () => {}
     const setChangeMode = () => {}
     const deleteTask = () => {}
-    console.log(todos.items)
 
 
 

@@ -49,10 +49,10 @@ export default function MainInput({}) {
             const currentDate = getCurrentDate();
             const deadline = newFormatDeadDate + ' | ' + deadTime;
 
-           dispatch(todoAdd({title, description, time: currentTime, date: currentDate, importance, completed: false, deadline}))
+            dispatch(todoAdd({title, description, time: currentTime, date: currentDate, importance, completed: false, deadline}))
             refTitle.current.value = ''
             refDescription.current.value = ''
-            setImportance("success")
+            setImportance("low")
         } else {
             e.preventDefault()
             const title = refTitle.current.value
@@ -73,22 +73,22 @@ export default function MainInput({}) {
         <div className="container mainInput">
             {changeMode && <h2>Editing a task</h2>}
             {!changeMode && <h2>Adding a new task</h2>}
-            <form onSubmit={submit} action="">
+            <form onSubmit={submit} method="POST">
                 <input id="titleInput" placeholder="Title..." required ref={refTitle} type="text"/>
                 <input id="descriptionInput" placeholder="description..." required ref={refDescription} type="text"/>
                 <div className="importance">
                     <h4>The importance of the task: </h4>
-                    <div onClick={() => setImportance('high')} className={importance === "high" ? "btn btn-danger active" :"btn btn-danger"}>high</div>
-                    <div onClick={() => setImportance('middle')} className={importance === "middle" ? "btn btn-warning active" :"btn btn-warning"}>middle</div>
                     <div onClick={() => setImportance('low')} className={importance === "low" ? "btn btn-success active" :"btn btn-success"}>low</div>
+                    <div onClick={() => setImportance('middle')} className={importance === "middle" ? "btn btn-warning active" :"btn btn-warning"}>middle</div>
+                    <div onClick={() => setImportance('high')} className={importance === "high" ? "btn btn-danger active" :"btn btn-danger"}>high</div>
                 </div>
                 <div className="deadline">
                     <h3>Deadline:</h3>
                     <input ref={refDate} defaultValue={getCurrentDate('-')} min={getCurrentDate()} type="date"/>
                     <input ref={refTime} defaultValue={getCurrentTime()} type="time"/>
                 </div>
-                {!changeMode && <button onSubmit={() => submit()} className="btn btn-success">Добавить</button>}
-                {changeMode && <button onSubmit={() => submit()} className="btn btn-primary">Изменить</button>}
+                {!changeMode && <button onSubmit={() => submit()} className="btn btn-success">Add Task</button>}
+                {changeMode && <button onSubmit={() => submit()} className="btn btn-primary">Edit Task</button>}
             </form>
         </div>
     )
