@@ -3,7 +3,26 @@
 
   width: 70%;
   height: 50px;
-
+  .tag {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 2px 7px;
+    border-radius: 10px;
+    margin-left: 10px;
+    width: 70px;
+    text-align: center;
+  }
+  .low {
+    color: white;
+    background: #198754;
+  }
+  .middle {
+    background: #FFC107;
+  }
+  .high {
+    color: white;
+    background: #DA3544;
+  }
   :first-letter {
     text-transform: uppercase;
   }
@@ -38,6 +57,9 @@
       display: flex;
       align-items: center;
 
+      .tag {
+        margin-right: 10px;
+      }
       button {
         margin-left: 10px;
         padding: 0;
@@ -68,24 +90,6 @@
 
     .description {
 
-    }
-    .tag {
-      font-size: 16px;
-      font-weight: bold;
-      padding: 2px 7px;
-      border-radius: 10px;
-      margin-left: 10px;
-    }
-    .low {
-      color: white;
-      background: #198754;
-    }
-    .middle {
-      background: #FFC107;
-    }
-    .high {
-      color: white;
-      background: #DA3544;
     }
     .description, .completedInfo, .importance, .date, .time, .deadline {
       border-bottom: 1px solid #ccc;

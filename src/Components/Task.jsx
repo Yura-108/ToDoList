@@ -2,16 +2,35 @@ import './styles/task.scss'
 import {useRef, useState} from "react";
 import {Reorder} from "framer-motion";
 import {motion} from "framer-motion";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchDeleteTodo, fetchEditTodo} from "../redux/slices/todoSlice.js";
+import {mode, toggle} from "../../server/controllers/EditMode.js";
 
-export default function Task({num, task, deleteTask, changeTask, taskCompleted, setChangeMode, isLoading = false}) {
+export default function Task({num, task, isLoading = false}) {
     const [wrapTask, setWrapTask] = useState(false)
     const checkbox = useRef(null)
 
+    const dispatch = useDispatch();
+    const editMode = useSelector(mode)
+
+    const deleteTodo = (id) => {
+        if (window.confirm('Are you sure want to delete your task?')) {
+            dispatch(fetchDeleteTodo(id))
+        }
+    }
+    const editTodo = (obj) => {
+        dispatch(fetchEditTodo({...obj, completed: checkbox.current.checked}))
+    }
+
 
     const edit = () => {
-        changeTask(task._id, task.title, task.description, task.importance)
-        setChangeMode(true)
-        setWrapTask(true)
+        if (editMode) {
+            setWrapTask(false)
+        } else {
+            setWrapTask(true)
+        }
+
+        dispatch(toggle(task._id));
     }
 
     return (
@@ -19,7 +38,7 @@ export default function Task({num, task, deleteTask, changeTask, taskCompleted, 
             <Reorder.Item className={wrapTask ? "task wrap" : "task"} as="div" value={task}>
             <div className="headerTask">
                 <div className="title">
-                    <h2>{num}.</h2>
+                    <h2 style={{width: "25px"}}>{num}.</h2>
                     <motion.h2
                         className={task.completed ? "mainText completed": "mainText"}
                         animate={{ opacity: 1 }}
@@ -29,11 +48,12 @@ export default function Task({num, task, deleteTask, changeTask, taskCompleted, 
                     </motion.h2>
                 </div>
                 <div className="panel">
+                    <div className={`tag ${task.importance}`}>{task.importance}</div>
                     <input checked={task.completed} className="checkbox" ref={checkbox}
-                           onChange={() => taskCompleted(checkbox.current.checked, task._id)} type="checkbox"/>
+                           onChange={() => editTodo(task)} type="checkbox"/>
                     <button onClick={() => edit()}
                             id="btnEdit"><i className="bi bi-pencil-square"></i></button>
-                    <button id="btnDelete" onClick={() => deleteTask(task._id)}><i className="bi bi-x-octagon"></i></button>
+                    <button id="btnDelete" onClick={() => deleteTodo(task._id)}><i className="bi bi-x-octagon"></i></button>
                     <button id="unwrap" onClick={() => setWrapTask(!wrapTask)}>
                         <i className={wrapTask ? "bi bi-chevron-up" : "bi bi-chevron-down"}></i>
                     </button>

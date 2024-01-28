@@ -1,7 +1,9 @@
 import {useEffect, useRef, useState} from "react";
 import './styles/mainInput.scss'
-import {useDispatch} from "react-redux";
-import {todoAdd} from "../redux/slices/todoSlice.js";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchAddTodo, fetchEditTodo} from "../redux/slices/todoSlice.js";
+import {mode, id, toggle} from "../../server/controllers/EditMode.js";
+
 
 export default function MainInput({}) {
     const refTitle = useRef(null);
@@ -9,8 +11,36 @@ export default function MainInput({}) {
     const refDate = useRef(null);
     const refTime = useRef(null);
     const [importance, setImportance] = useState('low')
+
+
     const dispatch = useDispatch()
-    const changeMode = false;
+    const editMode = useSelector(mode);
+    const {todos} = useSelector(state => state.todos)
+    const _id = useSelector(id)
+    const targetTodo = todos.items.find(todo => todo._id === _id)
+
+
+    const changeFormatDate = (date, format) => {
+        if (format === '-') {
+            const arr = date.split(':')
+            return  arr[2] + '-' + arr[1] + '-' + arr[0];
+        }
+        if (format === ':') {
+            const arr = date.split('-')
+            return  arr[2] + ':' + arr[1] + ':' + arr[0];
+        }
+    }
+
+    useEffect(() => {
+        if (editMode) {
+            refTitle.current.value = targetTodo.title;
+            refDescription.current.value = targetTodo.description;
+            setImportance(targetTodo.importance)
+            refDate.current.value = changeFormatDate(targetTodo.date, '-');
+            refTime.current.value = targetTodo.time;
+        }
+    }, [editMode]);
+
 
     const getCurrentDate = (format = '') => {
         let currentDate = new Date();
@@ -36,8 +66,8 @@ export default function MainInput({}) {
         return hour + ':' + minutes
     }
 
-    const submit = (e) => {
-        if (!changeMode) {
+    const submit = async (e) => {
+        if (!editMode) {
             e.preventDefault();
             const title = refTitle.current.value;
             const description = refDescription.current.value;
@@ -48,20 +78,31 @@ export default function MainInput({}) {
             const currentTime = getCurrentTime();
             const currentDate = getCurrentDate();
             const deadline = newFormatDeadDate + ' | ' + deadTime;
-
-            dispatch(todoAdd({title, description, time: currentTime, date: currentDate, importance, completed: false, deadline}))
+            const newTodo = {
+                title,
+                description,
+                time: currentTime,
+                date: currentDate,
+                importance, completed: false,
+                deadline,
+            }
+            await dispatch(fetchAddTodo(newTodo))
             refTitle.current.value = ''
             refDescription.current.value = ''
             setImportance("low")
         } else {
             e.preventDefault()
-            const title = refTitle.current.value
-            const description = refDescription.current.value
-            //editTask(title, description, importance)
+            dispatch(fetchEditTodo({
+                ...targetTodo,
+                title: refTitle.current.value,
+                description: refDescription.current.value,
+                importance: importance,
+                deadline: changeFormatDate(refDate.current.value, ':') + ' | ' + refTime.current.value
+            }))
             refTitle.current.value = ''
             refDescription.current.value = ''
             setImportance("low")
-
+            dispatch(toggle())
         }
     }
 
@@ -71,8 +112,8 @@ export default function MainInput({}) {
 
     return (
         <div className="container mainInput">
-            {changeMode && <h2>Editing a task</h2>}
-            {!changeMode && <h2>Adding a new task</h2>}
+            {editMode && <h2>Editing a task</h2>}
+            {!editMode && <h2>Adding a new task</h2>}
             <form onSubmit={submit} method="POST">
                 <input id="titleInput" placeholder="Title..." required ref={refTitle} type="text"/>
                 <input id="descriptionInput" placeholder="description..." required ref={refDescription} type="text"/>
@@ -84,11 +125,11 @@ export default function MainInput({}) {
                 </div>
                 <div className="deadline">
                     <h3>Deadline:</h3>
-                    <input ref={refDate} defaultValue={getCurrentDate('-')} min={getCurrentDate()} type="date"/>
-                    <input ref={refTime} defaultValue={getCurrentTime()} type="time"/>
+                    <input id="inputDate" ref={refDate} defaultValue={getCurrentDate('-')} min={getCurrentDate('-')} type="date"/>
+                    <input id="inputTime" ref={refTime} defaultValue={getCurrentTime()} type="time"/>
                 </div>
-                {!changeMode && <button onSubmit={() => submit()} className="btn btn-success">Add Task</button>}
-                {changeMode && <button onSubmit={() => submit()} className="btn btn-primary">Edit Task</button>}
+                {!editMode && <button onSubmit={() => submit()} className="btn btn-success">Add Task</button>}
+                {editMode && <button onSubmit={() => submit()} className="btn btn-primary">Edit Task</button>}
             </form>
         </div>
     )

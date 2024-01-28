@@ -24,7 +24,7 @@ app.get('/auth/me', checkAuth , checkMe)
 
 // Tasks
 app.post('/tasks', checkAuth, taskValidator, addingTask)
-app.get('/tasks', getAllTask)
+app.get('/tasks', checkAuth, getAllTask)
 app.delete('/tasks/:id', checkAuth, deleteTask)
 app.patch('/tasks/:id', checkAuth, updateTask)
 

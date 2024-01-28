@@ -7,9 +7,10 @@ import Header from "./Components/Header.jsx";
 import Login from "./Components/Login.jsx";
 import Registration from "./Components/Registration.jsx";
 import {Route, Routes} from 'react-router-dom'
-import Home from "./Components/Home.jsx";
+import ContainerTasks from "./Components/ContainerTasks.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchLogin, isAuthSelector} from "./redux/slices/userSlice.js";
+import Home from "./Components/Home.jsx";
 
 
 function App() {
@@ -24,7 +25,8 @@ function App() {
     <div className="App">
         <Header />
         <Routes>
-            <Route path="/tasks" element={<Home />} />
+            <Route path="/" element={<Home/>} />
+            <Route path="/tasks" element={<ContainerTasks />} />
             <Route path="/login" element={<Login />} />
             <Route path="/registration" element={<Registration />} />
         </Routes>

@@ -1,16 +1,18 @@
 import './styles/header.scss'
-import {Link, Navigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {isAuthSelector, logout} from "../redux/slices/userSlice.js";
-
+import { useNavigate } from 'react-router-dom';
 export default function Header() {
     const dispatch = useDispatch();
     const isAuth = useSelector(isAuthSelector);
+    const navigate = useNavigate();
 
     const onClickLogout = () => {
         if (window.confirm('Are you sure want to log')) {
             dispatch(logout())
             window.localStorage.removeItem('token')
+            navigate('/login');
         }
     }
     return (

@@ -30,7 +30,8 @@ export const addingTask = async (req, res) => {
 }
 export const getAllTask = async (req, res) => {
     try {
-        const tasks = await TaskSchema.find().populate('user').exec()
+        const tasks = await TaskSchema.find({ user: req.userId }).populate('user').exec();
+        //const tasks = await TaskSchema.find().populate('user').exec()
 
         res.json(tasks)
     } catch (err) {
