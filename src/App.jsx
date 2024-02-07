@@ -1,8 +1,5 @@
-import {useEffect, useRef, useState} from 'react'
+import {useEffect} from 'react'
 import './App.scss'
-import MainInput from "./Components/MainInput.jsx";
-import Task from "./Components/Task.jsx";
-import { Reorder} from "framer-motion";
 import Header from "./Components/Header.jsx";
 import Login from "./Components/Login.jsx";
 import Registration from "./Components/Registration.jsx";
@@ -11,6 +8,7 @@ import ContainerTasks from "./Components/ContainerTasks.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchLogin, isAuthSelector} from "./redux/slices/userSlice.js";
 import Home from "./Components/Home.jsx";
+import RequireAuth from "./Components/RequireAuth.jsx";
 
 
 function App() {
@@ -26,7 +24,7 @@ function App() {
         <Header />
         <Routes>
             <Route path="/" element={<Home/>} />
-            <Route path="/tasks" element={<ContainerTasks />} />
+          <Route path="/tasks" element={<RequireAuth><ContainerTasks /></RequireAuth>}/>
             <Route path="/login" element={<Login />} />
             <Route path="/registration" element={<Registration />} />
         </Routes>

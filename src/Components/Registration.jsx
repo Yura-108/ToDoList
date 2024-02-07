@@ -32,7 +32,7 @@ export default function Registration() {
 
     return (
         <div className="containerAuth">
-            <form method="POST" onSubmit={handleSubmit(onSubmit)} className="auth" style={{height: "400px"}}>
+            <form id={"registerForm"} method="POST" onSubmit={handleSubmit(onSubmit)} className="auth" style={{height: "400px"}}>
                 <h2>Registration</h2>
                 <input {...register('fullName', {required: 'Enter your name'})} id="username" type="text" placeholder="Your name"/>
                 <label htmlFor="fullName">{errors.fullName?.message}</label>

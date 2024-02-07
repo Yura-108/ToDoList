@@ -10,14 +10,17 @@ export const editModeSlice = createSlice({
     name: 'editMode',
     initialState,
     reducers: {
+        disable: (state) => {
+            state.mode = false;
+        },
         toggle: (state, action) => {
             state.mode = !state.mode;
             state.id = action.payload;
-        }
+        },
     }
 })
 
 export const mode = state => state.editMode.mode;
 export const id = state => state.editMode.id;
-export const { toggle } = editModeSlice.actions;
+export const { toggle, disable } = editModeSlice.actions;
 export default editModeSlice.reducer;

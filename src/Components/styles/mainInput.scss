@@ -1,39 +1,62 @@
 .mainInput {
   padding: 10px;
   margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   button {
     margin-left: 10px;
     width: 100px;
     margin-top: 20px;
   }
+  .title {
+    position: relative;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .cross {
+    font-size: 24px;
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+  }
   form {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
   }
+
   .importance {
     margin-top: 10px;
     font-size: 16px;
     width: 50%;
+
     .active {
       border: 2px solid #0171BC;
       font-weight: bold;
     }
+
     div {
       width: 160px;
       margin: 0 5px;
     }
   }
+
   #titleInput {
     font-size: 26px;
     font-weight: bold;
   }
+
   #descriptionInput {
     font-size: 16px;
     font-weight: 500;
     margin-top: 20px;
   }
+
   input {
     border: none;
     border-bottom: 2px solid black;
@@ -41,20 +64,25 @@
     outline: none;
     padding: 0 10px;
   }
+
   .deadline {
     margin-top: 20px;
     display: flex;
     justify-content: center;
     width: 50%;
+
     h3 {
       margin: 0;
     }
+
     #inputDate {
       width: 130px;
     }
+
     #inputTime {
-      width: 90px;
+      width: 130px;
     }
+
     input {
       margin-left: 15px;
       width: 30%;
